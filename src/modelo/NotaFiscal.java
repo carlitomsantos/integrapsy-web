@@ -12,6 +12,7 @@ public class NotaFiscal {
 	private String bairro;
 	private String cidade;
 	private String uf;
+
 	
 	public String getCpf() {
 		return cpf;

@@ -11,7 +11,6 @@ import conexaoBanco.ConexaoFirebird;
 public class Paciente {
 
 	private String nome;
-	private String tipoExame;
 	private String cpf;
 	private Date datNascimento;
 	private String email;
@@ -19,8 +18,22 @@ public class Paciente {
 	private Date vencimentoCnh;
 	private String numCnh;
 	private String numDeclaração;
-	private String formaPagamento;
+	
+	
+	private String pacCod;
 	private NotaFiscal notafiscal;
+
+	public Paciente() {
+
+	}
+
+	public Paciente(String name, Date datNascimento) {
+
+	}
+
+	public Paciente(String nome, String cpf, Date datNascimento, String celular, String email, String pacCod) {
+
+	}
 
 	public List<Paciente> busaPacientes(String nome) {
 		List<Paciente> pacientes = new ArrayList<Paciente>();
@@ -28,15 +41,19 @@ public class Paciente {
 
 		String query = "SELECT PES_NOME, PES_CPF, PES_DTNASCIMENTO, PES_CORREIOPESSOAL, "
 				+ "PES_CELULAR, PAC_COD FROM PACIENTE INNER JOIN PESSOA ON PESSOA.PES_COD = PACIENTE.PES_COD "
-				+ "WHERE PES_NOME like '"+nome.toUpperCase()+"%'";
+				+ "WHERE PES_NOME like '" + nome.toUpperCase() + "%' ORDER BY PES_NOME";
 
 		ResultSet rs = conexao.executeSql(query);
-		
+
 		try {
-			while(rs.next()){
+			while (rs.next()) {
 				Paciente paciente = new Paciente();
 				paciente.setNome(rs.getString("PES_NOME"));
+				paciente.setPacCod(rs.getString("PAC_COD"));
+				paciente.setEmail(rs.getString("PES_CORREIOPESSOAL"));
 				paciente.setDatNascimento(rs.getDate("PES_DTNASCIMENTO"));
+				paciente.setCpf(rs.getString("PES_CPF"));
+				paciente.setCelular(rs.getString("PES_CELULAR"));
 				pacientes.add(paciente);
 			}
 		} catch (SQLException e) {
@@ -53,14 +70,6 @@ public class Paciente {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public String getTipoExame() {
-		return tipoExame;
-	}
-
-	public void setTipoExame(String tipoExame) {
-		this.tipoExame = tipoExame;
 	}
 
 	public String getCpf() {
@@ -119,13 +128,6 @@ public class Paciente {
 		this.numDeclaração = numDeclaração;
 	}
 
-	public String getFormaPagamento() {
-		return formaPagamento;
-	}
-
-	public void setFormaPagamento(String formaPagamento) {
-		this.formaPagamento = formaPagamento;
-	}
 
 	public NotaFiscal getNotafiscal() {
 		return notafiscal;
@@ -133,5 +135,13 @@ public class Paciente {
 
 	public void setNotafiscal(NotaFiscal notafiscal) {
 		this.notafiscal = notafiscal;
+	}
+
+	public String getPacCod() {
+		return pacCod;
+	}
+
+	public void setPacCod(String pacCod) {
+		this.pacCod = pacCod;
 	}
 }

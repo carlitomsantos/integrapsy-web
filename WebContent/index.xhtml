@@ -3,7 +3,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <h:head>
 	<title>IntegraPsy-Web</title>
@@ -14,37 +15,91 @@
 			<div class="ui-g">
 				<div class="ui-g-12">
 					<h:form prependId="false">
-						<h:panelGrid columns="3">
+						<p:panelGrid columns="3"
+							columnClasses="ui-grid-col-4,ui-grid-col-7,ui-grid-col-1"
+							styleClass="ui-panelgrid-blank">
 							<h:outputText value="Buscar Pacientes :" />
 							<p:inputText id="counter" value="#{controleBuscaPacientes.nome}"
-								size="130" />
+								style="width:100%" />
 							<p:commandButton id="btnBuscar" value="Buscar"
+								style="margin-left:190px"
 								actionListener="#{controleBuscaPacientes.buscaPaciente}"
 								update="tabelaPacientes" />
-						</h:panelGrid>
-
+						</p:panelGrid>
 					</h:form>
 				</div>
 			</div>
 			<div class="ui-g">
-				<div class="ui-g-12">
+				<div class="ui-g-8">
 					<p:dataTable id="tabelaPacientes" var="paciente"
-						value="#{controleBuscaPacientes.pacientes}">
+						rowKey="#{paciente.pacCod}" reflow="true"
+						value="#{controleBuscaPacientes.pacientes}" scrollable="true"
+						scrollHeight="400" selectionMode="single"
+						selection="#{controleBuscaPacientes.selectedPaciente}">
+						<p:ajax event="rowSelect"
+							listener="#{controleBuscaPacientes.onPacienteSelect}"
+							update="pacienteDetalhes" />
+						<p:column headerText="Código">
+							<h:outputText value="#{paciente.pacCod}" />
+						</p:column>
 						<p:column headerText="Nome">
 							<h:outputText value="#{paciente.nome}" />
 						</p:column>
 						<p:column headerText="Data Nascimento">
 							<h:outputText value="#{paciente.datNascimento}">
-								 <f:convertDateTime pattern="dd/MM/yyyy"/>
+								<f:convertDateTime pattern="dd/MM/yyyy" />
 							</h:outputText>
+						</p:column>
+						<p:column headerText="E-mail">
+							<h:outputText value="#{paciente.email}" />
 						</p:column>
 					</p:dataTable>
 				</div>
+
+				<div class="ui-g-4">
+					<p:panelGrid columns="2" id="pacienteDetalhes"
+						styleClass="ui-panelgrid-blank">
+						<c:if test="#{controleBuscaPacientes.selectedPaciente != null}">
+							<f:facet name="header">
+								<p:graphicImage name="user.jpg" library="img" />
+							</f:facet>
+
+							<h:outputText value="Código" />
+							<h:outputText
+								value="#{controleBuscaPacientes.selectedPaciente.pacCod}" />
+
+							<h:outputText value="Nome:" />
+							<h:outputText
+								value="#{controleBuscaPacientes.selectedPaciente.nome}" />
+
+							<h:outputText value="Cpf:" />
+							<h:outputText
+								value="#{controleBuscaPacientes.selectedPaciente.cpf}" />
+
+							<h:outputText value="Data de Nascimento" />
+							<h:outputText
+								value="#{controleBuscaPacientes.selectedPaciente.datNascimento}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+
+							<h:outputText value="Email:" />
+							<h:outputText
+								value="#{controleBuscaPacientes.selectedPaciente.email}" />
+
+							<h:outputText value="Opções" />
+							<h:panelGroup>
+								<h:form>
+									<p:commandButton value="Detalhes" actionListener="#{controleBuscaPacientes.testeClique}" />
+									<p:commandButton value="Nova Solicitação" />
+								</h:form>
+							</h:panelGroup>
+						</c:if>
+
+
+
+					</p:panelGrid>
+				</div>
 			</div>
-
-
-
-
 		</ui:define>
 
 	</ui:composition>
