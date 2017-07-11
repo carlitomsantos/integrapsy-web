@@ -3,69 +3,30 @@ package conexaoBanco;
 import java.sql.Connection;
 
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
- 
 
 public class ConexaoFirebird {
-	
-	private Connection con = null;
-	private Statement stm = null;
-	private ResultSet rs = null;
-	private String query = "";
-	private String servidor;
-	private String caminhoBanco;
-	private String usuario;
-	private String senha;
-	
-	public ConexaoFirebird(){
+
+	public static Connection getConnection() {
 		try {
 			Class.forName("org.firebirdsql.jdbc.FBDriver");
-			con =  DriverManager.getConnection(
-		               "jdbc:firebirdsql:192.168.0.200:D:/ib_elab/anaclin/labclinic.gdb?encoding=ISO8859_1",
-		               "sysdba",
-		               "live");
-			
-			
+			Connection con = DriverManager.getConnection(
+					"jdbc:firebirdsql:192.168.0.200:D:/ib_elab/anaclin/labclinic.gdb?encoding=ISO8859_1", "sysdba",
+					"live");
+			return con;
+
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			System.out.println("Erro na conexão com o banco de dados" + e.getMessage());
 			e.printStackTrace();
+
+			return null;
+
 		}
 	}
-	
-	public ResultSet executeSql(String query){
+
+	public static void close(Connection con) {
 		try {
-			stm = con.createStatement();
-		    rs = stm.executeQuery(query);
-		} catch (SQLException e) {
-			e.printStackTrace();
+			con.close();
+		} catch (Exception ex) {
 		}
-		
-		return rs;
-	}
-
-	public Connection getCon() {
-		return con;
-	}
-
-	public void setCon(Connection con) {
-		this.con = con;
-	}
-
-	public Statement getStm() {
-		return stm;
-	}
-
-	public void setStm(Statement stm) {
-		this.stm = stm;
-	}
-
-	public String getQuery() {
-		return query;
-	}
-
-	public void setQuery(String query) {
-		this.query = query;
 	}
 }

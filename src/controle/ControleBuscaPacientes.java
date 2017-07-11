@@ -32,7 +32,7 @@ public class ControleBuscaPacientes implements Serializable {
 	
 	public void buscaPaciente(){
 		Paciente paciente = new Paciente();
-		pacientes = paciente.busaPacientes(nome.trim());	
+		pacientes = paciente.buscaPacientes(nome.trim());	
 		
 	}
 	

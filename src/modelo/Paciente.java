@@ -1,10 +1,18 @@
 package modelo;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import conexaoBanco.ConexaoFirebird;
 
@@ -33,17 +41,62 @@ public class Paciente {
 
 	}
 
-	public List<Paciente> busaPacientes(String nome) {
+	public List<Paciente> buscaPacientes(String nome) {
+		File diretorio = new File(System.getProperty("user.home") + "\\IntegraPSY");
+		File integraPsyProperties = new File(diretorio.toString() + "\\integrapsy.properties");
+		if(!diretorio.exists()){
+			diretorio.mkdir();
+			System.out.println("Pasta Criada");
+			if(!integraPsyProperties.exists()){
+				try {
+					FileWriter integra = new FileWriter(integraPsyProperties.toString());
+					Properties properties = new Properties();
+					FileInputStream fis = new FileInputStream(integraPsyProperties);
+					properties.load(fis);
+					properties.put("banco", "D:\\IB_ELAB\\ANACLIN\\LABCLINIC.GDB");
+					FileOutputStream fos = new FileOutputStream(integraPsyProperties);
+					properties.store(fos, null);
+					properties.load(fis);
+					System.out.println(properties.get("banco"));
+					fis.close();
+					fos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}else{
+			if(!integraPsyProperties.exists()){
+				try {
+					FileWriter integra = new FileWriter(integraPsyProperties.toString());
+					Properties properties = new Properties();
+					FileInputStream fis = new FileInputStream(integraPsyProperties);
+					properties.load(fis);
+					properties.put("banco", "D:\\IB_ELAB\\ANACLIN\\LABCLINIC.GDB");
+					FileOutputStream fos = new FileOutputStream(integraPsyProperties);
+					properties.store(fos, "FILE PROPERTIES");
+					fos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			System.out.println("Pasta já existe");
+		}
+		Connection con = null;
+		PreparedStatement ps = null;
 		List<Paciente> pacientes = new ArrayList<Paciente>();
-		ConexaoFirebird conexao = new ConexaoFirebird();
-
-		String query = "SELECT PES_NOME, PES_CPF, PES_DTNASCIMENTO, PES_CORREIOPESSOAL, "
-				+ "PES_CELULAR, PAC_COD FROM PACIENTE INNER JOIN PESSOA ON PESSOA.PES_COD = PACIENTE.PES_COD "
-				+ "WHERE PES_NOME like '" + nome.toUpperCase() + "%' ORDER BY PES_NOME";
-
-		ResultSet rs = conexao.executeSql(query);
 
 		try {
+			con = ConexaoFirebird.getConnection();
+			ps = con.prepareStatement( "SELECT PES_NOME, PES_CPF, PES_DTNASCIMENTO, PES_CORREIOPESSOAL, "
+					+ "PES_CELULAR, PAC_COD FROM PACIENTE INNER JOIN PESSOA ON PESSOA.PES_COD = PACIENTE.PES_COD "
+					+ "WHERE PES_NOME like ? ORDER BY PES_NOME");
+			
+			ps.setString(1, nome.toUpperCase()+"%");
+			
+			System.out.println(ps.toString());
+
+			ResultSet rs = ps.executeQuery();
+
 			while (rs.next()) {
 				Paciente paciente = new Paciente();
 				paciente.setNome(rs.getString("PES_NOME"));
@@ -54,42 +107,16 @@ public class Paciente {
 				paciente.setCelular(rs.getString("PES_CELULAR"));
 				pacientes.add(paciente);
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch (Exception e) {
 
+		}finally {
+			ConexaoFirebird.close(con);
+		}
+			
 		return pacientes;
 	}
-	
-	public Paciente find(String pacCod){		
-		ConexaoFirebird conexao = new ConexaoFirebird();
-		Paciente paciente = null;
 
-		String query = "SELECT PES_NOME, PES_CPF, PES_DTNASCIMENTO, PES_CORREIOPESSOAL, "
-				+ "PES_CELULAR, PAC_COD FROM PACIENTE INNER JOIN PESSOA ON PESSOA.PES_COD = PACIENTE.PES_COD "
-				+ "WHERE PAC_COD = '" + pacCod + "'";
-		
-		ResultSet rs = conexao.executeSql(query);
 
-		try {
-			while (rs.next()) {
-				paciente = new Paciente();
-				paciente.setNome(rs.getString("PES_NOME"));
-				paciente.setPacCod(rs.getString("PAC_COD"));
-				paciente.setEmail(rs.getString("PES_CORREIOPESSOAL"));
-				paciente.setDatNascimento(rs.getDate("PES_DTNASCIMENTO"));
-				paciente.setCpf(rs.getString("PES_CPF"));
-				paciente.setCelular(rs.getString("PES_CELULAR"));
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return paciente;
-	}
-	
 	public String getNome() {
 		return nome;
 	}
