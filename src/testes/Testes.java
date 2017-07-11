@@ -10,9 +10,8 @@ import modelo.Paciente;
 public class Testes {
 
 	@Test
-	public void testeBusaPacientes(){
-		List<Paciente> pacientes = new ArrayList<Paciente>();
-		Paciente paciente = new Paciente();
-		paciente.busaPacientes("teste");
+	public void test(){
+		TesteRest teste = new TesteRest();
+		teste.test();
 	}
 }

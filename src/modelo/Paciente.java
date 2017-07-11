@@ -17,9 +17,7 @@ public class Paciente {
 	private String celular;
 	private Date vencimentoCnh;
 	private String numCnh;
-	private String numDeclaração;
-	
-	
+	private String numDeclaração;	
 	private String pacCod;
 	private NotaFiscal notafiscal;
 
@@ -63,7 +61,35 @@ public class Paciente {
 
 		return pacientes;
 	}
+	
+	public Paciente find(String pacCod){		
+		ConexaoFirebird conexao = new ConexaoFirebird();
+		Paciente paciente = null;
 
+		String query = "SELECT PES_NOME, PES_CPF, PES_DTNASCIMENTO, PES_CORREIOPESSOAL, "
+				+ "PES_CELULAR, PAC_COD FROM PACIENTE INNER JOIN PESSOA ON PESSOA.PES_COD = PACIENTE.PES_COD "
+				+ "WHERE PAC_COD = '" + pacCod + "'";
+		
+		ResultSet rs = conexao.executeSql(query);
+
+		try {
+			while (rs.next()) {
+				paciente = new Paciente();
+				paciente.setNome(rs.getString("PES_NOME"));
+				paciente.setPacCod(rs.getString("PAC_COD"));
+				paciente.setEmail(rs.getString("PES_CORREIOPESSOAL"));
+				paciente.setDatNascimento(rs.getDate("PES_DTNASCIMENTO"));
+				paciente.setCpf(rs.getString("PES_CPF"));
+				paciente.setCelular(rs.getString("PES_CELULAR"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return paciente;
+	}
+	
 	public String getNome() {
 		return nome;
 	}
