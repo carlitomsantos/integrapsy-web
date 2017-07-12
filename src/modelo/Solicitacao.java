@@ -1,6 +1,11 @@
 package modelo;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Properties;
 
 import org.json.JSONObject;
 
@@ -18,6 +23,24 @@ public class Solicitacao {
 	private Paciente paciente;
 	private NotaFiscal notaFiscal;
 	private String formaPagamento;
+	private String usuarioPsy;
+	private String senhaPsy;
+	
+	public Solicitacao(){
+		File integraPsyProperties = new File(System.getProperty("user.home") + "\\IntegraPSY\\integrapsy.properties");
+		Properties properties = new Properties();
+		FileInputStream fis;
+		try {
+			fis = new FileInputStream(integraPsyProperties);
+			properties.load(fis);
+			usuarioPsy = properties.getProperty("usuarioPsy");
+			senhaPsy = properties.getProperty("senhaPsy");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public Solicitacao enviarSolicitacao(Solicitacao s) {
 

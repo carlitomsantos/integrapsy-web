@@ -23,15 +23,15 @@
 									label="Ip do Servidor" />
 								<h:outputText value="Caminho do Banco de Dados: *" />
 								<p:inputText value="#{controleConfig.caminhoBanco}"
-									required="true" label="Caminho do Banco de Dados" />
+									required="true" label="Caminho do Banco de Dados" size="40" />
 								<h:outputText value="Usuário *" />
 								<p:inputText value="#{controleConfig.usuario}" required="true"
 									label="Usuário" />
 								<h:outputText value="Senha: *" />
 								<p:password value="#{controleConfig.senha}" required="true"
-									label="Senha" />
+									label="Senha" redisplay="true"  />
 								<p:commandButton value="Testar Conexão"
-									actionListener="#{controleConfig.salvarConfig}"
+									actionListener="#{controleConfig.testarConexaoBanco}"
 									update="msg" />
 							</h:panelGrid>
 						</p:panel>

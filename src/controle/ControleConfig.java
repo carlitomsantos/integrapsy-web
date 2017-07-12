@@ -56,6 +56,8 @@ public class ControleConfig implements Serializable {
 					e.printStackTrace();
 				}
 				
+				System.out.println(senha);
+				
 
 			}
 		}
@@ -104,6 +106,8 @@ public class ControleConfig implements Serializable {
 				properties.put("caminhoBanco", caminhoBanco);
 				properties.put("usuario", usuario);
 				properties.put("senha", senha);
+				properties.put("usuarioPsy", usuarioPsy);
+				properties.put("senhaPsy", senhaPsy);
 				FileOutputStream fos = new FileOutputStream(integraPsyProperties);
 				properties.store(fos, null);
 			} catch (IOException e) {
@@ -121,6 +125,24 @@ public class ControleConfig implements Serializable {
 				properties.put("caminhoBanco", caminhoBanco);
 				properties.put("usuario", usuario);
 				properties.put("senha", senha);
+				FileOutputStream fos = new FileOutputStream(integraPsyProperties);
+				properties.store(fos, null);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else{
+			try {
+				FileWriter integra = new FileWriter(integraPsyProperties.toString());
+				Properties properties = new Properties();
+				FileInputStream fis = new FileInputStream(integraPsyProperties);
+				properties.load(fis);
+				properties.setProperty("servidor", servidor);
+				properties.setProperty("caminhoBanco", caminhoBanco);
+				properties.setProperty("usuario", usuario);
+				properties.setProperty("senha", senha);
+				properties.setProperty("usuarioPsy", usuarioPsy);
+				properties.setProperty("senhaPsy", senhaPsy);
 				FileOutputStream fos = new FileOutputStream(integraPsyProperties);
 				properties.store(fos, null);
 			} catch (IOException e) {
