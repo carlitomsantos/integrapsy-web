@@ -42,51 +42,13 @@ public class Paciente {
 	}
 
 	public List<Paciente> buscaPacientes(String nome) {
-		File diretorio = new File(System.getProperty("user.home") + "\\IntegraPSY");
-		File integraPsyProperties = new File(diretorio.toString() + "\\integrapsy.properties");
-		if(!diretorio.exists()){
-			diretorio.mkdir();
-			System.out.println("Pasta Criada");
-			if(!integraPsyProperties.exists()){
-				try {
-					FileWriter integra = new FileWriter(integraPsyProperties.toString());
-					Properties properties = new Properties();
-					FileInputStream fis = new FileInputStream(integraPsyProperties);
-					properties.load(fis);
-					properties.put("banco", "D:\\IB_ELAB\\ANACLIN\\LABCLINIC.GDB");
-					FileOutputStream fos = new FileOutputStream(integraPsyProperties);
-					properties.store(fos, null);
-					properties.load(fis);
-					System.out.println(properties.get("banco"));
-					fis.close();
-					fos.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}else{
-			if(!integraPsyProperties.exists()){
-				try {
-					FileWriter integra = new FileWriter(integraPsyProperties.toString());
-					Properties properties = new Properties();
-					FileInputStream fis = new FileInputStream(integraPsyProperties);
-					properties.load(fis);
-					properties.put("banco", "D:\\IB_ELAB\\ANACLIN\\LABCLINIC.GDB");
-					FileOutputStream fos = new FileOutputStream(integraPsyProperties);
-					properties.store(fos, "FILE PROPERTIES");
-					fos.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			System.out.println("Pasta já existe");
-		}
+		ConexaoFirebird conexao = new ConexaoFirebird();
 		Connection con = null;
 		PreparedStatement ps = null;
 		List<Paciente> pacientes = new ArrayList<Paciente>();
 
 		try {
-			con = ConexaoFirebird.getConnection();
+			con = conexao.getConnection();
 			ps = con.prepareStatement( "SELECT PES_NOME, PES_CPF, PES_DTNASCIMENTO, PES_CORREIOPESSOAL, "
 					+ "PES_CELULAR, PAC_COD FROM PACIENTE INNER JOIN PESSOA ON PESSOA.PES_COD = PACIENTE.PES_COD "
 					+ "WHERE PES_NOME like ? ORDER BY PES_NOME");
@@ -110,7 +72,7 @@ public class Paciente {
 		} catch (Exception e) {
 
 		}finally {
-			ConexaoFirebird.close(con);
+			conexao.close(con);
 		}
 			
 		return pacientes;

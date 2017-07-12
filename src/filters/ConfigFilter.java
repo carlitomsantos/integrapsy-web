@@ -29,14 +29,37 @@ public class ConfigFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		
-		String contextPath = ((HttpServletRequest) request).getContextPath();
-		
-		System.out.println(contextPath);
-		// Redirecionamos o usuário imediatamente
-		// para a página de login.xhtml
-		((HttpServletResponse) response).sendRedirect(contextPath + "/config/config.xhtml");
-		
+
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse res = (HttpServletResponse) response;
+		/*
+		 * File diretorio = new File(System.getProperty("user.home") +
+		 * "\\IntegraPSY"); File integraPsyProperties = new
+		 * File(diretorio.toString() + "\\integrapsy.properties");
+		 */
+
+		if (req.getRequestURI().equals("/integrapsy-web/") || req.getRequestURI().equals("/integrapsy-web/index.xhtml")
+				|| req.getRequestURI().equals("/integrapsy-web/login.xhtml")) {
+			File diretorio = new File(System.getProperty("user.home") + "\\IntegraPSY");
+			File integraPsyProperties = new File(diretorio.toString() + "\\integrapsy.properties");
+			if (!diretorio.exists()) {
+				res.sendRedirect(req.getContextPath() + "/config.xhtml");
+			} else if (!integraPsyProperties.exists()) {
+
+			} else {
+				chain.doFilter(request, response);
+			}
+		} else {
+			chain.doFilter(request, response);
+		}
+
+		/*
+		 * if(req.getRequestURI().equals("/integrapsy-web/index.xhtml") ||
+		 * req.getRequestURI().equals("/integrapsy-web/")){ HttpServletResponse
+		 * res = (HttpServletResponse) response;
+		 * res.sendRedirect(req.getContextPath() +"/config.xhtml" ); }else{
+		 * chain.doFilter(request, response); }
+		 */
 
 	}
 
