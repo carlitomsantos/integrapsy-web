@@ -24,36 +24,48 @@
 							<p:commandButton id="btnBuscar" value="Buscar"
 								style="margin-left:190px"
 								actionListener="#{controleBuscaPacientes.buscaPaciente}"
-								update="tabelaPacientes" />
+								update="tabelaPacientes"
+								onclick="PF('tablePac').paginator.setPage(0)" />
 						</p:panelGrid>
+						<p:blockUI block="resultadoBusca" trigger="btnBuscar">
+							Buscando Pacientes...
+						</p:blockUI>
 					</h:form>
 				</div>
 			</div>
 			<div class="ui-g">
 				<div class="ui-g-8">
-					<p:dataTable id="tabelaPacientes" var="paciente"
-						rowKey="#{paciente.pacCod}" reflow="true"
-						value="#{controleBuscaPacientes.pacientes}" scrollable="true"
-						scrollHeight="400" selectionMode="single"
-						selection="#{controleBuscaPacientes.selectedPaciente}">
-						<p:ajax event="rowSelect"
-							listener="#{controleBuscaPacientes.onPacienteSelect}"
-							update="pacienteDetalhes" />
-						<p:column headerText="Código">
-							<h:outputText value="#{paciente.pacCod}" />
-						</p:column>
-						<p:column headerText="Nome">
-							<h:outputText value="#{paciente.nome}" />
-						</p:column>
-						<p:column headerText="Data Nascimento">
-							<h:outputText value="#{paciente.datNascimento}">
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</h:outputText>
-						</p:column>
-						<p:column headerText="E-mail">
-							<h:outputText value="#{paciente.email}" />
-						</p:column>
-					</p:dataTable>
+					<h:panelGrid id="resultadoBusca">
+						<p:dataTable id="tabelaPacientes" var="paciente"
+							rowKey="#{paciente.pacCod}" reflow="true"
+							value="#{controleBuscaPacientes.pacientes}" scrollable="true"
+							scrollHeight="400" selectionMode="single"
+							selection="#{controleBuscaPacientes.selectedPaciente}"
+							paginator="true"
+							rows="50" widgetVar="tablePac"
+							emptyMessage=" ">
+							<p:ajax event="rowSelect"
+								listener="#{controleBuscaPacientes.onPacienteSelect}"
+								update="pacienteDetalhes" />
+							<p:column headerText="Código">
+								<h:outputText value="#{paciente.pacCod}" />
+							</p:column>
+							<p:column headerText="Nome">
+								<h:outputText value="#{paciente.nome}" />
+							</p:column>
+							<p:column headerText="Data Nascimento">
+								<h:outputText value="#{paciente.datNascimento}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="E-mail">
+								<h:outputText value="#{paciente.email}" />
+							</p:column>
+
+						</p:dataTable>
+
+					</h:panelGrid>
+
 				</div>
 
 				<div class="ui-g-4">
@@ -89,11 +101,10 @@
 
 								<h:outputText value="Opções" />
 								<h:panelGroup>
-									<p:commandButton value="Detalhes" process="pacienteDetalhes"
-										actionListener="#{controleBuscaPacientes.testeClique}" />
-									<p:commandButton value="Nova Solicitação" process="pacienteDetalhes"  
-										actionListener="#{controleBuscaPacientes.testeClique}" action="nova_solicitacao?faces-redirect=true"
-									/>
+									<p:commandButton value="Nova Solicitação"
+										process="pacienteDetalhes"
+										actionListener="#{controleBuscaPacientes.novaSolicitacao}"
+										action="nova_solicitacao?faces-redirect=true" />
 								</h:panelGroup>
 							</c:if>
 						</p:panelGrid>

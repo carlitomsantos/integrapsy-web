@@ -55,8 +55,6 @@ public class Paciente {
 			
 			ps.setString(1, nome.toUpperCase()+"%");
 			
-			System.out.println(ps.toString());
-
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {

@@ -9,14 +9,35 @@
 	<title>IntegraPsy- WEB</title>
 </h:head>
 <h:body>
-	<p:layout fullPage="true">
+	<div class="ui-g">
+		<div class="ui-g-12">
+			<h:form>
+				<p:menubar>
+					<p:menuitem value="Início" action="/app/index?faces-redirect=true" />
+					<p:menuitem value="Nova Solicitação"
+						action="/app/busca_paciente?faces-redirect=true" />
+					<p:menuitem value="Configurações"
+						action="/config/config?faces-redirect=true" />
+					<f:facet name="options">
+					<p:commandButton  value="Sair" action="#{controleLogin.logout}"
+							icon="ui-icon-extlink" />
+					</f:facet>
+				</p:menubar>
+			</h:form>
+		</div>
 
-		<p:layoutUnit position="north" size="110" collapsible="true">
+	</div>
+	<div>
+		<ui:insert name="content" />
+	</div>
+	<p:layout fullPage="true" rendered="false">
+
+		<p:layoutUnit position="north" size="60" collapsible="true">
 
 		</p:layoutUnit>
 
 		<p:layoutUnit position="center">
-			<ui:insert name="content" />
+
 		</p:layoutUnit>
 
 	</p:layout>

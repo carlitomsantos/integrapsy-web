@@ -58,8 +58,6 @@ public class ConexaoFirebird {
 			System.out.println(e.getMessage());
 			
 			throw e;
-			//System.out.println("Erro na conexão com o banco de dados" + e.getMessage());
-			//e.printStackTrace();
 
 		}
 	}

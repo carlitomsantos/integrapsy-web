@@ -42,7 +42,7 @@ public class ControleBuscaPacientes implements Serializable {
 		pacienteSelecionado = true;
 	}
 		
-	public void testeClique(){
+	public void novaSolicitacao(){
 		FacesContext fc = FacesContext.getCurrentInstance();
 		HttpSession session = (HttpSession) fc.getExternalContext().getSession(true);
 		session.setAttribute("paciente", selectedPaciente);

@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<title></title>
+</h:head>
+<h:body>
+	<ui:composition template="/layouts/app.xhtml">
+		<ui:define name="content">
+			<h:form prependId="false">
+				<p:growl id="msg" />
+				<p:accordionPanel>
+					<p:tab id="bancoDeDados" title="Configuração do Banco de Dados">
+						<p:panel>							
+							<h:panelGrid columns="2" columnClasses="label, value">
+								<h:outputText value="Ip do Servidor: *" />
+								<p:inputText id="ip" value="#{controleConfig.servidor}" required="true"
+									label="Ip do Servidor" />
+								<h:outputText value="Caminho do Banco de Dados: *" />
+								<p:inputText id="caminho" value="#{controleConfig.caminhoBanco}"
+									required="true" label="Caminho do Banco de Dados" size="40" />
+								<h:outputText value="Usuário *" />
+								<p:inputText id="usuario" value="#{controleConfig.usuario}" required="true"
+									label="Usuário" />
+								<h:outputText value="Senha: *" />
+								<p:password id="senha" value="#{controleConfig.senha}" required="true"
+									label="Senha" redisplay="true" />
+								<p:commandButton value="Testar Conexão"
+									actionListener="#{controleConfig.testarConexaoBanco}"
+									update="msg" />
+								<p:ajaxStatus>
+									<f:facet name="start">
+										<p:graphicImage name="eclipse_small.gif" library="gif" />
+									</f:facet>
+								</p:ajaxStatus>
+							</h:panelGrid>
+						</p:panel>
+					</p:tab>
+					<p:tab id="psychemedics" title="Configuração PSYCHEMEDICS">
+						<p:panel>
+							<h:panelGrid columns="2" columnClasses="label, value">
+								<h:outputText value="Usuário: *" />
+								<p:inputText value="#{controleConfig.usuarioPsy}"
+									label="Usuário PSY" />
+								<h:outputText value="Senha: *" />
+								<p:password value="#{controleConfig.senhaPsy}" label="Senha PSY"
+									redisplay="true"  />
+							</h:panelGrid>
+						</p:panel>
+					</p:tab>
+
+				</p:accordionPanel>
+				<p:commandButton value="Salvar"
+					actionListener="#{controleConfig.salvarConfig}" ajax="false" style="float:right;" action="busca_paciente?faces-redirect=true" />
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

@@ -16,8 +16,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-@WebFilter("/*")
+@WebFilter("/login.xhtml")
 public class ConfigFilter implements Filter {
 
 	@Override
@@ -36,9 +37,19 @@ public class ConfigFilter implements Filter {
 		 * File diretorio = new File(System.getProperty("user.home") +
 		 * "\\IntegraPSY"); File integraPsyProperties = new
 		 * File(diretorio.toString() + "\\integrapsy.properties");
-		 */
+		 */		
+		
+		File diretorio = new File(System.getProperty("user.home") + "\\IntegraPSY");
+		File integraPsyProperties = new File(diretorio.toString() + "\\integrapsy.properties");
+		if (!diretorio.exists()) {
+			res.sendRedirect(req.getContextPath() + "/config/config.xhtml");
+		} else if (!integraPsyProperties.exists()) {
+			res.sendRedirect(req.getContextPath() + "/config/config.xhtml");
+		} else {
+			chain.doFilter(request, response);
+		}
 
-		if (req.getRequestURI().equals("/integrapsy-web/") || req.getRequestURI().equals("/integrapsy-web/index.xhtml")
+		/*if (req.getRequestURI().equals("/integrapsy-web/") || req.getRequestURI().equals("/integrapsy-web/index.xhtml")
 				|| req.getRequestURI().equals("/integrapsy-web/login.xhtml")) {
 			File diretorio = new File(System.getProperty("user.home") + "\\IntegraPSY");
 			File integraPsyProperties = new File(diretorio.toString() + "\\integrapsy.properties");
@@ -51,7 +62,7 @@ public class ConfigFilter implements Filter {
 			}
 		} else {
 			chain.doFilter(request, response);
-		}
+		}*/
 
 		/*
 		 * if(req.getRequestURI().equals("/integrapsy-web/index.xhtml") ||

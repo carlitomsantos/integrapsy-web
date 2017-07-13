@@ -54,10 +54,7 @@ public class ControleConfig implements Serializable {
 					e.printStackTrace();
 				} catch (IOException e) {
 					e.printStackTrace();
-				}
-				
-				System.out.println(senha);
-				
+				}	
 
 			}
 		}
@@ -105,7 +102,7 @@ public class ControleConfig implements Serializable {
 		}
 	}
 	
-	public void salvaProperties(File integraPsyProperties){
+	private void salvaProperties(File integraPsyProperties){
 		try {
 			FileWriter integra = new FileWriter(integraPsyProperties.toString());
 			Properties properties = new Properties();
@@ -123,9 +120,8 @@ public class ControleConfig implements Serializable {
 		}
 	}
 	
-	public void alteraProperties(File integraPsyProperties){
+	private void alteraProperties(File integraPsyProperties){
 		try {
-			FileWriter integra = new FileWriter(integraPsyProperties.toString());
 			Properties properties = new Properties();
 			FileInputStream fis = new FileInputStream(integraPsyProperties);
 			properties.load(fis);
