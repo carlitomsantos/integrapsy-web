@@ -16,7 +16,7 @@
 				<p:wizard>
 					<p:tab id="bancoDeDados" title="Configuração do Banco de Dados">
 						<p:panel>
-							<p:growl id="msg"  />
+							<p:growl id="msg" />
 							<h:panelGrid columns="2" columnClasses="label, value">
 								<h:outputText value="Ip do Servidor: *" />
 								<p:inputText value="#{controleConfig.servidor}" required="true"
@@ -29,7 +29,7 @@
 									label="Usuário" />
 								<h:outputText value="Senha: *" />
 								<p:password value="#{controleConfig.senha}" required="true"
-									label="Senha" redisplay="true"  />
+									label="Senha" redisplay="true" />
 								<p:commandButton value="Testar Conexão"
 									actionListener="#{controleConfig.testarConexaoBanco}"
 									update="msg" />
@@ -45,6 +45,38 @@
 								<h:outputText value="Senha: *" />
 								<p:password value="#{controleConfig.senhaPsy}" required="true"
 									label="Senha" />
+							</h:panelGrid>
+						</p:panel>
+					</p:tab>
+					<p:tab id="confirmacao" title="Confirmacao">
+						<p:panel>
+							<h:panelGrid id="confirm" columns="3"
+								columnClasses="grid,grid,grid">
+								<h:panelGrid columns="2" columnClasses="label, value">
+									<h:outputText value="Ip do Servidor: *" />
+									<p:inputText value="#{controleConfig.servidor}" required="true"
+										label="Ip do Servidor" />
+									<h:outputText value="Caminho do Banco de Dados: *" />
+									<p:inputText value="#{controleConfig.caminhoBanco}"
+										required="true" label="Caminho do Banco de Dados" size="40" />
+									<h:outputText value="Usuário *" />
+									<p:inputText value="#{controleConfig.usuario}" required="true"
+										label="Usuário" />
+									<h:outputText value="Senha: *" />
+									<p:password value="#{controleConfig.senha}" required="true"
+										label="Senha" redisplay="true" />
+									<p:commandButton value="Testar Conexão"
+										actionListener="#{controleConfig.testarConexaoBanco}"
+										update="msg" />
+								</h:panelGrid>
+								<h:panelGrid columns="2" columnClasses="label, value">
+									<h:outputText value="Usuário: *" />
+									<p:inputText value="#{controleConfig.usuarioPsy}"
+										required="true" label="Usuário" />
+									<h:outputText value="Senha: *" />
+									<p:password value="#{controleConfig.senhaPsy}" required="true"
+										label="Senha" />
+								</h:panelGrid>
 							</h:panelGrid>
 						</p:panel>
 					</p:tab>

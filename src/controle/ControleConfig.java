@@ -97,58 +97,49 @@ public class ControleConfig implements Serializable {
 		File integraPsyProperties = new File(diretorio.toString() + "\\integrapsy.properties");
 		if(!diretorio.exists()){
 			diretorio.mkdir();
-			try {
-				FileWriter integra = new FileWriter(integraPsyProperties.toString());
-				Properties properties = new Properties();
-				FileInputStream fis = new FileInputStream(integraPsyProperties);
-				properties.load(fis);
-				properties.put("servidor", servidor);
-				properties.put("caminhoBanco", caminhoBanco);
-				properties.put("usuario", usuario);
-				properties.put("senha", senha);
-				properties.put("usuarioPsy", usuarioPsy);
-				properties.put("senhaPsy", senhaPsy);
-				FileOutputStream fos = new FileOutputStream(integraPsyProperties);
-				properties.store(fos, null);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+			salvaProperties(integraPsyProperties);			
 		}else if(!integraPsyProperties.exists()){
-			try {
-				FileWriter integra = new FileWriter(integraPsyProperties.toString());
-				Properties properties = new Properties();
-				FileInputStream fis = new FileInputStream(integraPsyProperties);
-				properties.load(fis);
-				properties.put("servidor", servidor);
-				properties.put("caminhoBanco", caminhoBanco);
-				properties.put("usuario", usuario);
-				properties.put("senha", senha);
-				FileOutputStream fos = new FileOutputStream(integraPsyProperties);
-				properties.store(fos, null);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			salvaProperties(integraPsyProperties);
 		}else{
-			try {
-				FileWriter integra = new FileWriter(integraPsyProperties.toString());
-				Properties properties = new Properties();
-				FileInputStream fis = new FileInputStream(integraPsyProperties);
-				properties.load(fis);
-				properties.setProperty("servidor", servidor);
-				properties.setProperty("caminhoBanco", caminhoBanco);
-				properties.setProperty("usuario", usuario);
-				properties.setProperty("senha", senha);
-				properties.setProperty("usuarioPsy", usuarioPsy);
-				properties.setProperty("senhaPsy", senhaPsy);
-				FileOutputStream fos = new FileOutputStream(integraPsyProperties);
-				properties.store(fos, null);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			alteraProperties(integraPsyProperties);
+		}
+	}
+	
+	public void salvaProperties(File integraPsyProperties){
+		try {
+			FileWriter integra = new FileWriter(integraPsyProperties.toString());
+			Properties properties = new Properties();
+			FileInputStream fis = new FileInputStream(integraPsyProperties);
+			properties.load(fis);
+			properties.put("servidor", servidor);
+			properties.put("caminhoBanco", caminhoBanco);
+			properties.put("usuario", usuario);
+			properties.put("senha", senha);
+			FileOutputStream fos = new FileOutputStream(integraPsyProperties);
+			properties.store(fos, null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void alteraProperties(File integraPsyProperties){
+		try {
+			FileWriter integra = new FileWriter(integraPsyProperties.toString());
+			Properties properties = new Properties();
+			FileInputStream fis = new FileInputStream(integraPsyProperties);
+			properties.load(fis);
+			properties.setProperty("servidor", servidor);
+			properties.setProperty("caminhoBanco", caminhoBanco);
+			properties.setProperty("usuario", usuario);
+			properties.setProperty("senha", senha);
+			properties.setProperty("usuarioPsy", usuarioPsy);
+			properties.setProperty("senhaPsy", senhaPsy);
+			FileOutputStream fos = new FileOutputStream(integraPsyProperties);
+			properties.store(fos, null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	

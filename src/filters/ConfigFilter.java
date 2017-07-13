@@ -45,7 +45,7 @@ public class ConfigFilter implements Filter {
 			if (!diretorio.exists()) {
 				res.sendRedirect(req.getContextPath() + "/config.xhtml");
 			} else if (!integraPsyProperties.exists()) {
-
+				res.sendRedirect(req.getContextPath() + "/config.xhtml");
 			} else {
 				chain.doFilter(request, response);
 			}
