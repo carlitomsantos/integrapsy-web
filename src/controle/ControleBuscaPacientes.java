@@ -29,10 +29,12 @@ public class ControleBuscaPacientes implements Serializable {
 	private String nome;
 	private Paciente selectedPaciente;
 	private Boolean pacienteSelecionado = false;
+	private String mensagem = " ";
 	
 	public void buscaPaciente(){
 		Paciente paciente = new Paciente();
-		pacientes = paciente.buscaPacientes(nome.trim());	
+		pacientes = paciente.buscaPacientes(nome.trim());
+		mensagem = pacientes.isEmpty() ? "Nenhum Paciente Encontrado" : " ";
 		
 	}
 	
@@ -78,6 +80,14 @@ public class ControleBuscaPacientes implements Serializable {
 
 	public void setPacienteSelecionado(Boolean pacienteSelecionado) {
 		this.pacienteSelecionado = pacienteSelecionado;
+	}
+
+	public String getMensagem() {
+		return mensagem;
+	}
+
+	public void setMensagem(String mensagem) {
+		this.mensagem = mensagem;
 	}
 	
 	
