@@ -25,6 +25,7 @@ public class Solicitacao {
 	private String formaPagamento;
 	private String usuarioPsy;
 	private String senhaPsy;
+	private String mensagem;
 	
 	public Solicitacao(){
 		File integraPsyProperties = new File(System.getProperty("user.home") + "\\IntegraPSY\\integrapsy.properties");
@@ -55,11 +56,17 @@ public class Solicitacao {
 				.post(ClientResponse.class, solicitacao.toString());
 		
 		String saida = response.getEntity(String.class);
+		System.out.println(saida);
 		JSONObject saidaJson = new JSONObject(saida);
 		
-		solicitacao.put("voucher", saidaJson.get("voucher"));
+		if(saidaJson.has("message")){
+			s.setMensagem(saidaJson.getString("message"));
+			return s;
+		}
+		
+		/*solicitacao.put("voucher", saidaJson.get("voucher"));
 		solicitacao.put("url_voucher", saidaJson.get("url_voucher"));
-		solicitacao.put("url_boleto", saidaJson.get("url_boleto"));
+		solicitacao.put("url_boleto", saidaJson.get("url_boleto"));*/
 		
 		s.setUrlBoleto(saidaJson.getString("url_boleto"));
 		s.setVoucher(saidaJson.getString("voucher"));
@@ -165,6 +172,30 @@ public class Solicitacao {
 
 	public void setFormaPagamento(String formaPagamento) {
 		this.formaPagamento = formaPagamento;
+	}
+
+	public String getUsuarioPsy() {
+		return usuarioPsy;
+	}
+
+	public void setUsuarioPsy(String usuarioPsy) {
+		this.usuarioPsy = usuarioPsy;
+	}
+
+	public String getSenhaPsy() {
+		return senhaPsy;
+	}
+
+	public void setSenhaPsy(String senhaPsy) {
+		this.senhaPsy = senhaPsy;
+	}
+
+	public String getMensagem() {
+		return mensagem;
+	}
+
+	public void setMensagem(String mensagem) {
+		this.mensagem = mensagem;
 	}
 
 }

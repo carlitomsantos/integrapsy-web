@@ -23,7 +23,6 @@ public class ControleSolicitacao implements Serializable {
 	private Solicitacao solicitacao;
 	private Paciente paciente;
 	private NotaFiscal notaFiscal;
-	
 
 	@PostConstruct
 	public void init() {
@@ -31,43 +30,45 @@ public class ControleSolicitacao implements Serializable {
 				.getRequest();
 		HttpSession session = (HttpSession) request.getSession();
 		solicitacao = new Solicitacao();
-		paciente = (Paciente) session.getAttribute("paciente") != null? (Paciente) session.getAttribute("paciente") : new Paciente() ;
+		paciente = (Paciente) session.getAttribute("paciente") != null ? (Paciente) session.getAttribute("paciente")
+				: new Paciente();
 		notaFiscal = new NotaFiscal();
 		notaFiscal.setNome(paciente.getNome());
 		notaFiscal.setCpf(paciente.getCpf());
 		notaFiscal.setEmail(paciente.getEmail());
-		session.setAttribute("paciente", null);
+		session.removeAttribute("paciente");
 	}
-	
-	public void teste(){
+
+	public void teste() {
 		System.out.println(solicitacao.getFormaPagamento());
 	}
-	
-	public void enviarSolicitacao(){
+
+	public void enviarSolicitacao() {
 		System.out.println(paciente.getNome());
 		solicitacao.setNotaFiscal(notaFiscal);
 		solicitacao.setPaciente(paciente);
-		
-		
+		paciente.atualizar(paciente);
+
 		Solicitacao solicitacao = this.solicitacao.enviarSolicitacao(this.solicitacao);
-		
-		System.out.println(solicitacao.getUrlVoucher());
-		
-		/*solicitacao = solicitacao.enviarSolicitacao(solicitacao);
-		
-		System.out.println(solicitacao.getUrlBoleto());*/
-		
+
+		System.out
+				.println(solicitacao.getUrlVoucher() != null ? solicitacao.getUrlVoucher() : solicitacao.getMensagem());
+
 	}
 
-	public void onCpfKeyUp(){
+	public void onNomeKeyUp() {
+		notaFiscal.setNome(paciente.getNome());
+	}
+
+	public void onCpfKeyUp() {
 		notaFiscal.setCpf(paciente.getCpf());
 	}
-	
-	public void onEmailKeyUp(){
+
+	public void onEmailKeyUp() {
 		notaFiscal.setEmail(paciente.getEmail());
 	}
-	
-	public void onNotaEmailKeyUp(){
+
+	public void onNotaEmailKeyUp() {
 		paciente.setEmail(notaFiscal.getEmail());
 	}
 

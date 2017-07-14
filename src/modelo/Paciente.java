@@ -1,24 +1,19 @@
 package modelo;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 
 import conexaoBanco.ConexaoFirebird;
 
 public class Paciente {
 
 	private String nome;
+	private Integer pesCod;
 	private String cpf;
 	private Date datNascimento;
 	private String email;
@@ -49,7 +44,7 @@ public class Paciente {
 
 		try {
 			con = conexao.getConnection();
-			ps = con.prepareStatement( "SELECT PES_NOME, PES_CPF, PES_DTNASCIMENTO, PES_CORREIOPESSOAL, "
+			ps = con.prepareStatement( "SELECT PESSOA.PES_COD , PES_NOME, PES_CPF, PES_DTNASCIMENTO, PES_CORREIOPESSOAL, "
 					+ "PES_CELULAR, PAC_COD FROM PACIENTE INNER JOIN PESSOA ON PESSOA.PES_COD = PACIENTE.PES_COD "
 					+ "WHERE PES_NOME like ? ORDER BY PES_NOME");
 			
@@ -65,6 +60,7 @@ public class Paciente {
 				paciente.setDatNascimento(rs.getDate("PES_DTNASCIMENTO"));
 				paciente.setCpf(rs.getString("PES_CPF"));
 				paciente.setCelular(rs.getString("PES_CELULAR"));
+				paciente.setPesCod(rs.getInt("PES_COD"));
 				pacientes.add(paciente);
 			}
 		} catch (Exception e) {
@@ -76,6 +72,35 @@ public class Paciente {
 		return pacientes;
 	}
 
+	public boolean atualizar(Paciente paciente){
+		
+		ConexaoFirebird conexao = new ConexaoFirebird();
+		Connection con = null;
+		PreparedStatement ps = null;
+		
+		try {
+			con = conexao.getConnection();
+			ps = con.prepareStatement("UPDATE PESSOA SET PES_NOME = ?, PES_CORREIOPESSOAL = ? , PES_DTNASCIMENTO = ? ,"
+					+ " PES_CPF = ? , PES_CELULAR = ? WHERE PES_COD = ?   ");
+			ps.setString(1, paciente.getNome());
+			ps.setString(2, paciente.getEmail());
+			ps.setDate(3, new java.sql.Date(paciente.getDatNascimento().getTime()));
+			ps.setString(4, paciente.getCpf());
+			ps.setString(5, paciente.getCelular());
+			System.out.println(paciente.getPesCod());
+			ps.setInt(6, paciente.getPesCod());
+			
+			if(ps.executeUpdate() > 0){
+				return true;
+			}else{
+				return false;
+			}
+					
+		} catch (Exception e) {
+			e.printStackTrace();			
+			return false;
+		}
+	}
 
 	public String getNome() {
 		return nome;
@@ -156,5 +181,13 @@ public class Paciente {
 
 	public void setPacCod(String pacCod) {
 		this.pacCod = pacCod;
+	}
+
+	public Integer getPesCod() {
+		return pesCod;
+	}
+
+	public void setPesCod(Integer pesCod) {
+		this.pesCod = pesCod;
 	}
 }

@@ -25,7 +25,9 @@
 									<p:outputLabel value="Nome: " for="nome" />
 									<p:inputText id="nome"
 										value="#{controleSolicitacao.paciente.nome}" size="40"
-										required="true" />
+										required="true" >
+										<p:ajax event="keyup" update="notaNome" listener="#{controleSolicitacao.onNomeKeyUp}"/>
+									</p:inputText>
 									<p:outputLabel value="CPF: " for="cpf" />
 									<p:inputMask id="cpf"
 										value="#{controleSolicitacao.paciente.cpf}" required="true"

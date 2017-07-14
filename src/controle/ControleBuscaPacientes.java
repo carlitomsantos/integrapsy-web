@@ -38,16 +38,20 @@ public class ControleBuscaPacientes implements Serializable {
 		
 	}
 	
-	public void onPacienteSelect(SelectEvent s){
+	public void onPacienteSelect(SelectEvent s){		
 		selectedPaciente = (Paciente) s.getObject();
-		
-		pacienteSelecionado = true;
-	}
-		
-	public void novaSolicitacao(){
 		FacesContext fc = FacesContext.getCurrentInstance();
 		HttpSession session = (HttpSession) fc.getExternalContext().getSession(true);
 		session.setAttribute("paciente", selectedPaciente);
+		
+		pacienteSelecionado = true;
+	}
+	
+	public void onPaginationChange(){
+		FacesContext fc = FacesContext.getCurrentInstance();
+		HttpSession session = (HttpSession) fc.getExternalContext().getSession(true);
+		
+		selectedPaciente = (Paciente) session.getAttribute("paciente");
 	}
 
 	public List<Paciente> getPacientes() {

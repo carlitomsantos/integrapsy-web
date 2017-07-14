@@ -44,10 +44,12 @@
 							value="#{controleBuscaPacientes.pacientes}" scrollable="true"
 							scrollHeight="400" selectionMode="single"
 							selection="#{controleBuscaPacientes.selectedPaciente}"
-							paginator="true" rows="50" widgetVar="tablePac" emptyMessage="#{controleBuscaPacientes.mensagem}">
+							paginator="true" rows="50" widgetVar="tablePac"
+							emptyMessage="#{controleBuscaPacientes.mensagem}">
 							<p:ajax event="rowSelect"
 								listener="#{controleBuscaPacientes.onPacienteSelect}"
 								update="pacienteDetalhes" />
+							<p:ajax event="page" update="pacienteDetalhes" listener="#{controleBuscaPacientes.onPaginationChange}" />
 							<p:column headerText="Código">
 								<h:outputText value="#{paciente.pacCod}" />
 							</p:column>
@@ -104,7 +106,6 @@
 								<h:panelGroup>
 									<p:commandButton value="Nova Solicitação"
 										process="pacienteDetalhes"
-										actionListener="#{controleBuscaPacientes.novaSolicitacao}"
 										action="nova_solicitacao?faces-redirect=true" />
 								</h:panelGroup>
 							</c:if>
