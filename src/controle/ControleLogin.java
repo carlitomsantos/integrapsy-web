@@ -30,7 +30,6 @@ public class ControleLogin implements Serializable {
 		if(valido){
 			HttpSession sessao = SessionUtils.getSession();
 			sessao.setAttribute("usuario", usuario);
-			System.out.println(SessionUtils.getUsuario());
 			return "/app/index?faces-redirect=true";
 		}
 		

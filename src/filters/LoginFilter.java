@@ -43,11 +43,9 @@ public class LoginFilter implements Filter {
 		
 		Object o = (Object) sessao.getAttribute("usuario");
 		
-		if(o != null && req.getRequestURI().equals("/integrapsy-web/login/login.xhtml")){
+		if(o != null){
 			res.sendRedirect("/integrapsy-web/app/index.xhtml");
 		}
-		
-		
 		
 		chain.doFilter(request, response);
 	}
