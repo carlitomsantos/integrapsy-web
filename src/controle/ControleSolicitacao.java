@@ -3,9 +3,9 @@ package controle;
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -23,6 +23,10 @@ public class ControleSolicitacao implements Serializable {
 	private Solicitacao solicitacao;
 	private Paciente paciente;
 	private NotaFiscal notaFiscal;
+	private Boolean retornoSolicitacao;
+	private String urlVoucher;
+	private String urlBoleto;
+	
 
 	@PostConstruct
 	public void init() {
@@ -39,20 +43,34 @@ public class ControleSolicitacao implements Serializable {
 		session.removeAttribute("paciente");
 	}
 
-	public void teste() {
-		System.out.println(solicitacao.getFormaPagamento());
-	}
-
 	public void enviarSolicitacao() {
-		System.out.println(paciente.getNome());
-		solicitacao.setNotaFiscal(notaFiscal);
+		FacesContext context = FacesContext.getCurrentInstance();
+		String mensagem = null;
 		solicitacao.setPaciente(paciente);
 		paciente.atualizar(paciente);
-
+		System.out.println(solicitacao.getFormaPagamento());
+		if (!solicitacao.getFormaPagamento().equals("F")) {
+			solicitacao.setNotaFiscal(notaFiscal);
+		} else {
+			solicitacao.setNotaFiscal(null);
+		}
+		
 		Solicitacao solicitacao = this.solicitacao.enviarSolicitacao(this.solicitacao);
+		
+		 mensagem = solicitacao.getMensagem();
+		 
+		 System.out.println(mensagem);
+		
+		if(mensagem != null){
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,mensagem, null));
+			retornoSolicitacao = false;
+		}else{
+			context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Solicitação Enviado Com Sucesso", null));
+			urlBoleto = solicitacao.getUrlBoleto();
+			urlVoucher = solicitacao.getUrlVoucher();
+			retornoSolicitacao = true;
+		}
 
-		System.out
-				.println(solicitacao.getUrlVoucher() != null ? solicitacao.getUrlVoucher() : solicitacao.getMensagem());
 
 	}
 
@@ -94,6 +112,30 @@ public class ControleSolicitacao implements Serializable {
 
 	public void setNotaFiscal(NotaFiscal notaFiscal) {
 		this.notaFiscal = notaFiscal;
+	}
+
+	public Boolean getRetornoSolicitacao() {
+		return retornoSolicitacao;
+	}
+
+	public void setRetornoSolicitacao(Boolean retornoSolicitacao) {
+		this.retornoSolicitacao = retornoSolicitacao;
+	}
+
+	public String getUrlVoucher() {
+		return urlVoucher;
+	}
+
+	public void setUrlVoucher(String urlVoucher) {
+		this.urlVoucher = urlVoucher;
+	}
+
+	public String getUrlBoleto() {
+		return urlBoleto;
+	}
+
+	public void setUrlBoleto(String urlBoleto) {
+		this.urlBoleto = urlBoleto;
 	}
 
 }

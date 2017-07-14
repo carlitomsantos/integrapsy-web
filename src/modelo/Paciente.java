@@ -87,7 +87,6 @@ public class Paciente {
 			ps.setDate(3, new java.sql.Date(paciente.getDatNascimento().getTime()));
 			ps.setString(4, paciente.getCpf());
 			ps.setString(5, paciente.getCelular());
-			System.out.println(paciente.getPesCod());
 			ps.setInt(6, paciente.getPesCod());
 			
 			if(ps.executeUpdate() > 0){

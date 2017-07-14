@@ -1,24 +1,16 @@
 package testes;
 
-import java.io.BufferedReader;
-import java.util.List;
 
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
 import org.json.JSONObject;
 
 import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.GenericType;
-import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 
 public class TesteRest {
 
 	public void test() {
 		Client client = Client.create();
-		JSONArray json;
 		JSONObject solicitacao = new JSONObject();
 
 		//WebResource webResource = client.resource("http://devmedianotesapi.azurewebsites.net/api/");

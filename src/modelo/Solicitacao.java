@@ -47,10 +47,11 @@ public class Solicitacao {
 
 		Client cliente = Client.create();
 		JSONObject solicitacao = this.solicitacaoToJSON(s);
+		s.setMensagem(null);
 		
 		WebResource resource = cliente.resource("https://api.exametoxicologico.com.br/ws/v1/create");
-		ClientResponse response =  resource.header("Psychemedics-Code", "psy-teste")
-				.header("Psychemedics-Pass", "6c5c10956c2bbe505bb8c42201efe5ef")
+		ClientResponse response =  resource.header("Psychemedics-Code", usuarioPsy)
+				.header("Psychemedics-Pass", senhaPsy)
 				.accept("application/json")
 				.type("application/json")
 				.post(ClientResponse.class, solicitacao.toString());
@@ -64,11 +65,10 @@ public class Solicitacao {
 			return s;
 		}
 		
-		/*solicitacao.put("voucher", saidaJson.get("voucher"));
-		solicitacao.put("url_voucher", saidaJson.get("url_voucher"));
-		solicitacao.put("url_boleto", saidaJson.get("url_boleto"));*/
+		if(saidaJson.has("url_boleto")){
+			s.setUrlBoleto(saidaJson.getString("url_boleto"));
+		}		
 		
-		s.setUrlBoleto(saidaJson.getString("url_boleto"));
 		s.setVoucher(saidaJson.getString("voucher"));
 		s.setUrlVoucher(saidaJson.getString("url_voucher"));		
 		
@@ -79,7 +79,7 @@ public class Solicitacao {
 		
 		JSONObject solicitacao = new JSONObject();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String cep = s.getNotaFiscal().getCep().substring(0, 4) + "-" + s.getNotaFiscal().getCep().substring(5, 7);
+		
 
 		solicitacao.put("nome", s.getPaciente().getNome());
 		solicitacao.put("tipo_exame", s.getTipoExame());
@@ -91,20 +91,24 @@ public class Solicitacao {
 		solicitacao.put("numero_cnh", s.getPaciente().getNumCnh());
 		solicitacao.put("numero_declaracao", s.getPaciente().getNumDeclaração());
 		solicitacao.put("forma_pagamento", s.getFormaPagamento());
+		
+		if(s.getNotaFiscal() != null){
+			JSONObject notaFiscal = new JSONObject();
+			String cep = s.getNotaFiscal().getCep().substring(0, 4) + "-" + s.getNotaFiscal().getCep().substring(5, 7);
+			notaFiscal.put("cpf", s.getNotaFiscal().getCpf());
+			notaFiscal.put("nome", s.getNotaFiscal().getNome());
+			notaFiscal.put("email", s.getNotaFiscal().getEmail());
+			notaFiscal.put("cep", cep);
+			notaFiscal.put("logradouro", s.getNotaFiscal().getLogradouro());
+			notaFiscal.put("numero", s.getNotaFiscal().getNumero());
+			notaFiscal.put("complemento", s.getNotaFiscal().getComplemento());
+			notaFiscal.put("bairro", s.getNotaFiscal().getBairro());
+			notaFiscal.put("cidade", s.getNotaFiscal().getCidade());
+			notaFiscal.put("uf", s.getNotaFiscal().getUf());
 
-		JSONObject notaFiscal = new JSONObject();
-		notaFiscal.put("cpf", s.getNotaFiscal().getCpf());
-		notaFiscal.put("nome", s.getNotaFiscal().getNome());
-		notaFiscal.put("email", s.getNotaFiscal().getEmail());
-		notaFiscal.put("cep", cep);
-		notaFiscal.put("logradouro", s.getNotaFiscal().getLogradouro());
-		notaFiscal.put("numero", s.getNotaFiscal().getNumero());
-		notaFiscal.put("complemento", s.getNotaFiscal().getComplemento());
-		notaFiscal.put("bairro", s.getNotaFiscal().getBairro());
-		notaFiscal.put("cidade", s.getNotaFiscal().getCidade());
-		notaFiscal.put("uf", s.getNotaFiscal().getUf());
-
-		solicitacao.put("nota_fiscal", notaFiscal);
+			solicitacao.put("nota_fiscal", notaFiscal);
+		}
+		
 		
 		return solicitacao;
 	}

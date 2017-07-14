@@ -25,15 +25,17 @@
 									<p:outputLabel value="Nome: " for="nome" />
 									<p:inputText id="nome"
 										value="#{controleSolicitacao.paciente.nome}" size="40"
-										required="true" >
-										<p:ajax event="keyup" update="notaNome" listener="#{controleSolicitacao.onNomeKeyUp}"/>
+										required="true">
+										<p:ajax event="keyup" update="notaNome"
+											listener="#{controleSolicitacao.onNomeKeyUp}" />
 									</p:inputText>
 									<p:outputLabel value="CPF: " for="cpf" />
 									<p:inputMask id="cpf"
 										value="#{controleSolicitacao.paciente.cpf}" required="true"
 										requiredMessage="CPF Obrigatório" mask="999.999.999-99"
 										label="CPF">
-										<p:ajax event="keyup" update="notaCpf" listener="#{controleSolicitacao.onCpfKeyUp}"/>
+										<p:ajax event="keyup" update="notaCpf"
+											listener="#{controleSolicitacao.onCpfKeyUp}" />
 									</p:inputMask>
 									<p:outputLabel value="Data de Nascimento: " for="dtNascimento" />
 									<p:calendar id="dtNascimento"
@@ -42,8 +44,9 @@
 										requiredMessage="Data de Nascimento Obrigatória" />
 									<p:outputLabel value="Email: " for="email" />
 									<p:inputText id="email"
-										value="#{controleSolicitacao.paciente.email}" >
-										<p:ajax event="keyup" update="notaEmail" listener="#{controleSolicitacao.onEmailKeyUp}"/>	
+										value="#{controleSolicitacao.paciente.email}">
+										<p:ajax event="keyup" update="notaEmail"
+											listener="#{controleSolicitacao.onEmailKeyUp}" />
 									</p:inputText>
 									<p:outputLabel value="Celular: " for="celular" />
 									<p:inputMask id="celular"
@@ -108,7 +111,8 @@
 										value="#{controleSolicitacao.notaFiscal.email}"
 										required="true"
 										requiredMessage="Nota Fiscal: Email Obrigatório">
-										<p:ajax event="keyup" update="email" listener="#{controleSolicitacao.onNotaEmailKeyUp}"/>
+										<p:ajax event="keyup" update="email"
+											listener="#{controleSolicitacao.onNotaEmailKeyUp}" />
 									</p:inputText>
 									<p:outputLabel value="CEP: " for="cep" />
 									<p:inputMask id="cep"
@@ -122,7 +126,8 @@
 									<p:outputLabel value="Número: " for="logNum" />
 									<p:inputText id="logNum"
 										value="#{controleSolicitacao.notaFiscal.numero}"
-										required="true" requiredMessage="Número Logradouro Obrigatório" />
+										required="true"
+										requiredMessage="Número Logradouro Obrigatório" />
 									<p:outputLabel value="Complemento: " for="logComp" />
 									<p:inputText id="logComp"
 										value="#{controleSolicitacao.notaFiscal.complemento}" />
@@ -140,13 +145,37 @@
 										requiredMessage="UF Obrigatório" size="5" mask="aa" />
 								</h:panelGrid>
 							</h:panelGroup>
-							<p:commandButton value="Enviar" update="frmEnvio" actionListener="#{controleSolicitacao.enviarSolicitacao}"
-								style="float:right;"></p:commandButton>
+							<h:panelGroup>
+								<p:commandButton style="float:right" value="Enviar"
+									update="frmEnvio retornoSolicitacao"
+									actionListener="#{controleSolicitacao.enviarSolicitacao}"></p:commandButton>
+								<p:ajaxStatus>
+									<f:facet name="start">
+										<p:graphicImage name="loadingbar.gif" library="gif" />
+									</f:facet>
+								</p:ajaxStatus>
+
+							</h:panelGroup>
 						</h:panelGrid>
 					</h:form>
 				</div>
 			</div>
-			<div class="ui-g"></div>
+			<div class="ui-g">
+				<div class="ui-g-12">
+					<h:form prependId="false">
+						<h:panelGrid columns="2" style="margin: 0 auto;"
+							id="retornoSolicitacao">
+							<c:if test="#{controleSolicitacao.retornoSolicitacao}">
+								<p:button href="#{controleSolicitacao.urlBoleto}" rendered="#{controleSolicitacao.urlBoleto != null}"
+									value="Imprimir Boleto" target="_blank" />
+								<p:button href="#{controleSolicitacao.urlVoucher}"
+									value="Imprimir Voucher" target="_blank" />
+							</c:if>
+						</h:panelGrid>
+					</h:form>
+				</div>
+
+			</div>
 		</ui:define>
 	</ui:composition>
 </h:body>

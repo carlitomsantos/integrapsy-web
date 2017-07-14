@@ -13,13 +13,13 @@
 		<div class="ui-g-12">
 			<h:form>
 				<p:menubar>
-					<p:menuitem value="Início" action="/app/index?faces-redirect=true" />
+					<p:menuitem value="Início" action="/app/index?faces-redirect=true" ajax="false" />
 					<p:menuitem value="Nova Solicitação"
-						action="/app/busca_paciente?faces-redirect=true" />
+						action="/app/busca_paciente?faces-redirect=true" ajax="false" />
 					<p:menuitem value="Configurações"
-						action="/config/config?faces-redirect=true" />
+						action="/config/config?faces-redirect=true" ajax="false" />
 					<f:facet name="options">
-					<p:commandButton  value="Sair" action="#{controleLogin.logout}"
+					<p:commandButton  value="Sair" action="#{controleLogin.logout}" ajax="false"
 							icon="ui-icon-extlink" />
 					</f:facet>
 				</p:menubar>
