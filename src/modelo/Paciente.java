@@ -22,6 +22,7 @@ public class Paciente {
 	private String numCnh;
 	private String numDeclaração;	
 	private String pacCod;
+	private String nomMae;
 	private NotaFiscal notafiscal;
 
 	public Paciente() {
@@ -45,12 +46,18 @@ public class Paciente {
 		try {
 			con = conexao.getConnection();
 			ps = con.prepareStatement( "SELECT PESSOA.PES_COD , PES_NOME, PES_CPF, PES_DTNASCIMENTO, PES_CORREIOPESSOAL, "
-					+ "PES_CELULAR, PAC_COD FROM PACIENTE INNER JOIN PESSOA ON PESSOA.PES_COD = PACIENTE.PES_COD "
+					+ "PES_CELULAR, PAC_COD, PES_NOM_MAE FROM PACIENTE INNER JOIN PESSOA ON PESSOA.PES_COD = PACIENTE.PES_COD "
 					+ "WHERE PES_NOME like ? ORDER BY PES_NOME");
 			
 			ps.setString(1, nome.toUpperCase()+"%");
 			
 			ResultSet rs = ps.executeQuery();
+			
+			if(!rs.next()){
+				ps.setString(1, "%"+nome.toUpperCase()+"%");
+				
+			 rs = ps.executeQuery();
+			}
 
 			while (rs.next()) {
 				Paciente paciente = new Paciente();
@@ -61,6 +68,7 @@ public class Paciente {
 				paciente.setCpf(rs.getString("PES_CPF"));
 				paciente.setCelular(rs.getString("PES_CELULAR"));
 				paciente.setPesCod(rs.getInt("PES_COD"));
+				paciente.setNomMae(rs.getString("PES_NOM_MAE"));
 				pacientes.add(paciente);
 			}
 		} catch (Exception e) {
@@ -188,5 +196,13 @@ public class Paciente {
 
 	public void setPesCod(Integer pesCod) {
 		this.pesCod = pesCod;
+	}
+
+	public String getNomMae() {
+		return nomMae;
+	}
+
+	public void setNomMae(String nomMae) {
+		this.nomMae = nomMae;
 	}
 }

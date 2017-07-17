@@ -19,8 +19,13 @@
 							columnClasses="ui-grid-col-4,ui-grid-col-7,ui-grid-col-1"
 							styleClass="ui-panelgrid-blank">
 							<h:outputText value="Buscar Pacientes :" />
-							<p:inputText id="counter" value="#{controleBuscaPacientes.nome}"
-								style="width:100%" />
+							<p:inputText id="nomePaciente" value="#{controleBuscaPacientes.nome}" 
+								style="width:100%; text-transform: uppercase" >
+								<p:ajax event="keyup" listener="#{controleBuscaPacientes.buscaPaciente}"
+									oncomplete="PF('tablePac').paginator.setPage(0)"
+									update="tabelaPacientes"
+								 />	
+							</p:inputText>
 							<p:commandButton id="btnBuscar" value="Buscar"
 								style="margin-left:190px"
 								actionListener="#{controleBuscaPacientes.buscaPaciente}"
@@ -50,9 +55,6 @@
 								listener="#{controleBuscaPacientes.onPacienteSelect}"
 								update="pacienteDetalhes" />
 							<p:ajax event="page" update="pacienteDetalhes" listener="#{controleBuscaPacientes.onPaginationChange}" />
-							<p:column headerText="Código">
-								<h:outputText value="#{paciente.pacCod}" />
-							</p:column>
 							<p:column headerText="Nome">
 								<h:outputText value="#{paciente.nome}" />
 							</p:column>
@@ -60,6 +62,9 @@
 								<h:outputText value="#{paciente.datNascimento}">
 									<f:convertDateTime pattern="dd/MM/yyyy" />
 								</h:outputText>
+							</p:column>
+							<p:column headerText="Mãe">
+								<h:outputText value="#{paciente.nomMae}" />
 							</p:column>
 							<p:column headerText="E-mail">
 								<h:outputText value="#{paciente.email}" />

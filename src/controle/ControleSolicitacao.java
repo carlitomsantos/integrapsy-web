@@ -1,6 +1,8 @@
 package controle;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -9,6 +11,12 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import org.json.JSONObject;
+
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 
 import modelo.NotaFiscal;
 import modelo.Paciente;
@@ -26,6 +34,7 @@ public class ControleSolicitacao implements Serializable {
 	private Boolean retornoSolicitacao;
 	private String urlVoucher;
 	private String urlBoleto;
+	private List<String> uf;
 	
 
 	@PostConstruct
@@ -41,6 +50,7 @@ public class ControleSolicitacao implements Serializable {
 		notaFiscal.setCpf(paciente.getCpf());
 		notaFiscal.setEmail(paciente.getEmail());
 		session.removeAttribute("paciente");
+		uf = estados();
 	}
 
 	public void enviarSolicitacao() {
@@ -73,7 +83,54 @@ public class ControleSolicitacao implements Serializable {
 
 
 	}
-
+	
+	public void buscaCep(){
+		Client cliente = Client.create();
+		WebResource resource = cliente.resource("https://viacep.com.br/ws/"+ notaFiscal.getCep() +"/json/");
+		ClientResponse response =  resource
+				.accept("application/json")
+				.type("application/json")
+				.get(ClientResponse.class);
+		String saida = response.getEntity(String.class);
+		JSONObject saidaJson = new JSONObject(saida);
+		if(!saidaJson.has("erro")){
+			notaFiscal.setLogradouro(saidaJson.getString("logradouro"));
+			notaFiscal.setBairro(saidaJson.getString("bairro"));
+			notaFiscal.setCidade(saidaJson.getString("localidade"));
+			notaFiscal.setUf(saidaJson.getString("uf"));
+		}
+	}
+	
+	private List<String> estados(){
+		List<String> estados = new ArrayList<String>();
+		estados.add("AC");
+		estados.add("AL");
+		estados.add("AP");
+		estados.add("AM");
+		estados.add("BA");
+		estados.add("CE");
+		estados.add("DF");
+		estados.add("ES");
+		estados.add("GO");
+		estados.add("MA");
+		estados.add("MT");
+		estados.add("MS");
+		estados.add("MG");
+		estados.add("PA");
+		estados.add("PB");
+		estados.add("PR");
+		estados.add("PE");
+		estados.add("PI");
+		estados.add("RJ");
+		estados.add("RO");
+		estados.add("RR");
+		estados.add("SC");
+		estados.add("SP");
+		estados.add("SE");
+		estados.add("TO");
+		return estados;
+	}
+	
 	public void onNomeKeyUp() {
 		notaFiscal.setNome(paciente.getNome());
 	}
@@ -136,6 +193,14 @@ public class ControleSolicitacao implements Serializable {
 
 	public void setUrlBoleto(String urlBoleto) {
 		this.urlBoleto = urlBoleto;
+	}
+
+	public List<String> getUf() {
+		return uf;
+	}
+
+	public void setUf(List<String> uf) {
+		this.uf = uf;
 	}
 
 }

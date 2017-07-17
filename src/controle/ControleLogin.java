@@ -5,8 +5,11 @@ import java.io.Serializable;
 import utils.CryptoUtil;
 import utils.SessionUtils;
 
+
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 import modelo.Usuario;
@@ -21,30 +24,25 @@ public class ControleLogin implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String usuario;
-	private String senha;
+	private String senha;	
+
 	
 	public String login(){
-		boolean valido = false;
 		
 		senha = CryptoUtil.crypt(senha);
 		Usuario usuario = Usuario.getUsuario(this.usuario, this.senha);
-		
-		if(usuario != null){
-			HttpSession sessao = SessionUtils.getSession();
+		HttpSession sessao = SessionUtils.getSession();
+
+		if(usuario != null){			
 			sessao.setAttribute("usuario", usuario);
-			return "/app/index?faces-redirect=true";
+			return "/app/index";
+		
+		}else{
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Login E/OU Senha Inválidos", null));
+			return "login";
 		}
 		
-		/*if(usuario.equals("admin") && senha.equals("admin")){
-			valido = true;
-		}
 		
-		
-		if(valido){
-			
-		}*/
-		
-		return "/login/login?faces-redirect=true";
 	}
 	
 	public String logout(){
@@ -65,7 +63,6 @@ public class ControleLogin implements Serializable {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	
-	
+
 
 }

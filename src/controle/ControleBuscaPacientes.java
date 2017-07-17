@@ -49,6 +49,7 @@ public class ControleBuscaPacientes implements Serializable {
 		
 		selectedPaciente = (Paciente) session.getAttribute("paciente");
 	}
+	
 
 	public List<Paciente> getPacientes() {
 		return pacientes;

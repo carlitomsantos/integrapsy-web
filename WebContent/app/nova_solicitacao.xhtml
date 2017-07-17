@@ -43,7 +43,7 @@
 										pattern="dd/MM/yyyy" mask="true" required="true"
 										requiredMessage="Data de Nascimento Obrigatória" />
 									<p:outputLabel value="Email: " for="email" />
-									<p:inputText id="email"
+									<p:inputText id="email" size="30"
 										value="#{controleSolicitacao.paciente.email}">
 										<p:ajax event="keyup" update="notaEmail"
 											listener="#{controleSolicitacao.onEmailKeyUp}" />
@@ -67,7 +67,7 @@
 										pattern="dd/MM/yyyy" mask="true" required="true"
 										requiredMessage="Data Vencimento CNH Obrigatória" />
 									<p:outputLabel value="Forma de Pagamento:" />
-									<p:selectOneMenu id="console"
+									<p:selectOneMenu id="formaPagamento"
 										value="#{controleSolicitacao.solicitacao.formaPagamento}">
 										<f:selectItem itemLabel="Boleto Bancário" itemValue="B" />
 										<f:selectItem itemLabel="Depósito Bancário" itemValue="E" />
@@ -108,7 +108,7 @@
 										requiredMessage="Nota Fiscal: CPF Obrigatório" readonly="true" />
 									<p:outputLabel value="Email: " for="notaEmail" />
 									<p:inputText id="notaEmail"
-										value="#{controleSolicitacao.notaFiscal.email}"
+										value="#{controleSolicitacao.notaFiscal.email}" size="30"
 										required="true"
 										requiredMessage="Nota Fiscal: Email Obrigatório">
 										<p:ajax event="keyup" update="email"
@@ -117,12 +117,16 @@
 									<p:outputLabel value="CEP: " for="cep" />
 									<p:inputMask id="cep"
 										value="#{controleSolicitacao.notaFiscal.cep}" required="true"
-										mask="99999-999" requiredMessage="CEP Obrigatório" />
+										mask="99999-999" requiredMessage="CEP Obrigatório">
+										<p:ajax event="blur" update="notaFiscal"
+											listener="#{controleSolicitacao.buscaCep}" />
+									</p:inputMask>
 									<p:outputLabel value="Logradouro: " for="log" />
 									<p:inputText id="log"
 										value="#{controleSolicitacao.notaFiscal.logradouro}"
 										required="true" size="30"
 										requiredMessage="Logradouro Obrigatório" />
+
 									<p:outputLabel value="Número: " for="logNum" />
 									<p:inputText id="logNum"
 										value="#{controleSolicitacao.notaFiscal.numero}"
@@ -140,9 +144,12 @@
 										value="#{controleSolicitacao.notaFiscal.cidade}"
 										required="true" requiredMessage="Cidade Obrigatória" />
 									<p:outputLabel value="UF: " for="uf" />
-									<p:inputMask id="uf"
-										value="#{controleSolicitacao.notaFiscal.uf}" required="true"
-										requiredMessage="UF Obrigatório" size="5" mask="aa" />
+									<p:selectOneMenu id="uf"
+										value="#{controleSolicitacao.notaFiscal.uf}"
+										 filter="true" filterMatchMode="startsWith">
+										<f:selectItems value="#{controleSolicitacao.uf}" var="uf"
+											itemLabel="#{uf}" itemValue="#{uf}" />
+									</p:selectOneMenu>
 								</h:panelGrid>
 							</h:panelGroup>
 							<h:panelGroup>
@@ -166,7 +173,8 @@
 						<h:panelGrid columns="2" style="margin: 0 auto;"
 							id="retornoSolicitacao">
 							<c:if test="#{controleSolicitacao.retornoSolicitacao}">
-								<p:button href="#{controleSolicitacao.urlBoleto}" rendered="#{controleSolicitacao.urlBoleto != null}"
+								<p:button href="#{controleSolicitacao.urlBoleto}"
+									rendered="#{controleSolicitacao.urlBoleto != null}"
 									value="Imprimir Boleto" target="_blank" />
 								<p:button href="#{controleSolicitacao.urlVoucher}"
 									value="Imprimir Voucher" target="_blank" />
