@@ -51,7 +51,7 @@ public class ConexaoFirebird {
 		try {
 			Class.forName("org.firebirdsql.jdbc.FBDriver");
 			Connection con = DriverManager
-					.getConnection("jdbc:firebirdsql:" + servidor + ":" + caminhoBanco+"?encoding=ISO8859_1", usuario ,  senha);
+					.getConnection("jdbc:firebirdsql:" + servidor + ":" + caminhoBanco+"?encoding=WIN1252", usuario ,  senha);
 			return con;
 
 		} catch (Exception e) {

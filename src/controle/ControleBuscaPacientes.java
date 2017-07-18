@@ -28,9 +28,16 @@ public class ControleBuscaPacientes implements Serializable {
 	private String mensagem = " ";
 	
 	public void buscaPaciente(){
-		Paciente paciente = new Paciente();
-		pacientes = paciente.buscaPacientes(nome.trim());
-		mensagem = pacientes.isEmpty() ? "Nenhum Paciente Encontrado" : " ";
+		if(!nome.equals("") && nome != null){
+			Paciente paciente = new Paciente();
+			pacientes = paciente.buscaPacientes(nome.trim().toUpperCase()+"%");
+			if(pacientes.isEmpty()){
+				pacientes = paciente.buscaPacientes("%"+nome.trim().toUpperCase()+"%");
+			}
+			mensagem = pacientes.isEmpty() ? "Nenhum Paciente Encontrado" : " ";
+		}else{
+			mensagem = "Digite um nome";
+		}
 		
 	}
 	

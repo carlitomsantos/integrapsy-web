@@ -42,23 +42,21 @@ public class Paciente {
 		Connection con = null;
 		PreparedStatement ps = null;
 		List<Paciente> pacientes = new ArrayList<Paciente>();
-
+		
+		
 		try {
 			con = conexao.getConnection();
 			ps = con.prepareStatement( "SELECT PESSOA.PES_COD , PES_NOME, PES_CPF, PES_DTNASCIMENTO, PES_CORREIOPESSOAL, "
 					+ "PES_CELULAR, PAC_COD, PES_NOM_MAE FROM PACIENTE INNER JOIN PESSOA ON PESSOA.PES_COD = PACIENTE.PES_COD "
 					+ "WHERE PES_NOME like ? ORDER BY PES_NOME");
 			
-			ps.setString(1, nome.toUpperCase()+"%");
+			
+			
+			ps.setString(1, nome);
+			
 			
 			ResultSet rs = ps.executeQuery();
 			
-			if(!rs.next()){
-				ps.setString(1, "%"+nome.toUpperCase()+"%");
-				
-			 rs = ps.executeQuery();
-			}
-
 			while (rs.next()) {
 				Paciente paciente = new Paciente();
 				paciente.setNome(rs.getString("PES_NOME"));
@@ -71,12 +69,13 @@ public class Paciente {
 				paciente.setNomMae(rs.getString("PES_NOM_MAE"));
 				pacientes.add(paciente);
 			}
+			rs.close();
+			ps.close();
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}finally {
 			conexao.close(con);
-		}
-			
+		}			
 		return pacientes;
 	}
 
@@ -98,8 +97,10 @@ public class Paciente {
 			ps.setInt(6, paciente.getPesCod());
 			
 			if(ps.executeUpdate() > 0){
+				con.commit();
 				return true;
 			}else{
+				con.commit();
 				return false;
 			}
 					

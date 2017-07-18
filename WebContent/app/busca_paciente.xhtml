@@ -32,7 +32,7 @@
 								update="tabelaPacientes"
 								onclick="PF('tablePac').paginator.setPage(0)" />
 						</p:panelGrid>
-						<p:blockUI block="resultadoBusca" trigger="btnBuscar">
+						<p:blockUI block="resultadoBusca" trigger="btnBuscar nomePaciente" widgetVar="block">
 							<h:panelGrid columns="2">
 									Buscando Pacientes...
 								<p:graphicImage name="eclipse_small.gif" library="gif" />

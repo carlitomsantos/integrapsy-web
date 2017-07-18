@@ -41,7 +41,8 @@
 									<p:calendar id="dtNascimento"
 										value="#{controleSolicitacao.paciente.datNascimento}"
 										pattern="dd/MM/yyyy" mask="true" required="true"
-										requiredMessage="Data de Nascimento Obrigatória" />
+										requiredMessage="Data de Nascimento Obrigatória"
+										locale="pt_BR" />
 									<p:outputLabel value="Email: " for="email" />
 									<p:inputText id="email" size="30"
 										value="#{controleSolicitacao.paciente.email}">
@@ -65,7 +66,8 @@
 									<p:calendar id="venCnh"
 										value="#{controleSolicitacao.paciente.vencimentoCnh}"
 										pattern="dd/MM/yyyy" mask="true" required="true"
-										requiredMessage="Data Vencimento CNH Obrigatória" />
+										requiredMessage="Data Vencimento CNH Obrigatória"
+										locale="pt_BR" />
 									<p:outputLabel value="Forma de Pagamento:" />
 									<p:selectOneMenu id="formaPagamento"
 										value="#{controleSolicitacao.solicitacao.formaPagamento}">
@@ -145,8 +147,8 @@
 										required="true" requiredMessage="Cidade Obrigatória" />
 									<p:outputLabel value="UF: " for="uf" />
 									<p:selectOneMenu id="uf"
-										value="#{controleSolicitacao.notaFiscal.uf}"
-										 filter="true" filterMatchMode="startsWith">
+										value="#{controleSolicitacao.notaFiscal.uf}" filter="true"
+										filterMatchMode="startsWith">
 										<f:selectItems value="#{controleSolicitacao.uf}" var="uf"
 											itemLabel="#{uf}" itemValue="#{uf}" />
 									</p:selectOneMenu>
@@ -182,7 +184,7 @@
 						</h:panelGrid>
 					</h:form>
 				</div>
-
+			
 			</div>
 		</ui:define>
 	</ui:composition>
