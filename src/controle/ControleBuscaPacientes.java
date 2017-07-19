@@ -8,6 +8,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
+import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.SelectEvent;
 
 
@@ -28,11 +29,14 @@ public class ControleBuscaPacientes implements Serializable {
 	private String mensagem = " ";
 	
 	public void buscaPaciente(){
+		DataTable d = (DataTable) FacesContext.getCurrentInstance().getViewRoot()
+			    .findComponent("tabelaPacientes");
+		d.setFirst(0);
 		if(!nome.equals("") && nome != null){
 			Paciente paciente = new Paciente();
 			pacientes = paciente.buscaPacientes(nome.trim().toUpperCase()+"%");
 			if(pacientes.isEmpty()){
-				pacientes = paciente.buscaPacientes("%"+nome.trim().toUpperCase()+"%");
+				pacientes = paciente.buscaPacientes("%" +nome.trim().toUpperCase()+"%");
 			}
 			mensagem = pacientes.isEmpty() ? "Nenhum Paciente Encontrado" : " ";
 		}else{

@@ -19,20 +19,18 @@
 							columnClasses="ui-grid-col-4,ui-grid-col-7,ui-grid-col-1"
 							styleClass="ui-panelgrid-blank">
 							<h:outputText value="Buscar Pacientes :" />
-							<p:inputText id="nomePaciente" value="#{controleBuscaPacientes.nome}" 
-								style="width:100%; text-transform: uppercase" >
-								<p:ajax event="keyup" listener="#{controleBuscaPacientes.buscaPaciente}"
-									oncomplete="PF('tablePac').paginator.setPage(0)"
-									update="tabelaPacientes"
-								 />	
+							<p:inputText id="nomePaciente"
+								value="#{controleBuscaPacientes.nome}"
+								style="width:100%; text-transform: uppercase">
 							</p:inputText>
 							<p:commandButton id="btnBuscar" value="Buscar"
 								style="margin-left:190px"
 								actionListener="#{controleBuscaPacientes.buscaPaciente}"
 								update="tabelaPacientes"
-								onclick="PF('tablePac').paginator.setPage(0)" />
+ />
 						</p:panelGrid>
-						<p:blockUI block="resultadoBusca" trigger="btnBuscar nomePaciente" widgetVar="block">
+						<p:blockUI block="resultadoBusca" trigger="btnBuscar"
+							widgetVar="block">
 							<h:panelGrid columns="2">
 									Buscando Pacientes...
 								<p:graphicImage name="eclipse_small.gif" library="gif" />
@@ -49,12 +47,15 @@
 							value="#{controleBuscaPacientes.pacientes}" scrollable="true"
 							scrollHeight="400" selectionMode="single"
 							selection="#{controleBuscaPacientes.selectedPaciente}"
-							paginator="true" rows="50" widgetVar="tablePac"
-							emptyMessage="#{controleBuscaPacientes.mensagem}">
+							paginator="true" rows="20" widgetVar="tablePac"
+							emptyMessage="#{controleBuscaPacientes.mensagem}"
+							paginatorAlwaysVisible="false"
+							>
 							<p:ajax event="rowSelect"
 								listener="#{controleBuscaPacientes.onPacienteSelect}"
 								update="pacienteDetalhes" />
-							<p:ajax event="page" update="pacienteDetalhes" listener="#{controleBuscaPacientes.onPaginationChange}" />
+							<p:ajax event="page" update="pacienteDetalhes"
+								listener="#{controleBuscaPacientes.onPaginationChange}" />
 							<p:column headerText="Nome">
 								<h:outputText value="#{paciente.nome}" />
 							</p:column>

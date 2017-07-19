@@ -55,7 +55,10 @@ public class Paciente {
 			ps.setString(1, nome);
 			
 			
+			
 			ResultSet rs = ps.executeQuery();
+			
+		
 			
 			while (rs.next()) {
 				Paciente paciente = new Paciente();
@@ -69,8 +72,6 @@ public class Paciente {
 				paciente.setNomMae(rs.getString("PES_NOM_MAE"));
 				pacientes.add(paciente);
 			}
-			rs.close();
-			ps.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
